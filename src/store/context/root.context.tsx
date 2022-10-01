@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import todos from './todos/todos.context';
 
-///UTILS BELOW
-/***************************************************
+/// UTILS BELOW
+/** *************************************************
  * @contextComponents is a collection of the
  * high level context component.
  *
@@ -13,8 +13,8 @@ import todos from './todos/todos.context';
  */
 const contextComponents = [todos.Component];
 
-///COMPONENT BELOW
-/*********************************************/
+/// COMPONENT BELOW
+/** ****************************************** */
 type RootContextPropTypes = {
   children: React.ReactElement;
 };
@@ -32,7 +32,7 @@ export function RootContext(props: RootContextPropTypes) {
 export default {
   Component: RootContext,
   useRootContext: {
-    //just add your useContext hook into this object and it will be exposed in the src/stor/useStore.ts
+    // just add your useContext hook into this object and it will be exposed in the src/stor/useStore.ts
     useTodos: todos.useTodos,
   },
 };

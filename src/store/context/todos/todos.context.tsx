@@ -9,8 +9,8 @@ import type { TodosResolvedResponse, TodosRejectedResponse } from './todos';
 
 const GENERIC_ERROR_MSG = "Sorry, we couldn't connect to the service kindly try again in few minutes";
 
-///REDUCER BELOW
-/**********************************************************/
+/// REDUCER BELOW
+/** ******************************************************* */
 type TodosState = {
   isLoading: boolean;
   error: string | null;
@@ -62,22 +62,22 @@ function todosReducer(state: TodosState, action: TodosAction): TodosState {
 }
 
 /// CONTEXT BELOW
-/**********************************************************/
+/** ******************************************************* */
 interface TodosContextType extends TodosState {
   asyncGetTodos(): Promise<void>;
 }
 const [TodosProvider, useTodosContext] = createContext<TodosContextType>('@react-mvc/todos');
 
-///COMPONENT BELOW
-/**********************************************************/
+/// COMPONENT BELOW
+/** ******************************************************* */
 type TodosPropTypes = {
   children: React.ReactElement;
 };
 function TodosStore(props: TodosPropTypes) {
   const [state, dispatch] = useReducer(todosReducer, INITIAL_TODOS_STATE);
 
-  ///ACTIONS BELOW
-  /**********************************************************/
+  /// ACTIONS BELOW
+  /** ******************************************************* */
   async function asyncGetTodos() {
     dispatch({ type: TODOS_TYPES.GET_TODOS_IS_LOADING });
 

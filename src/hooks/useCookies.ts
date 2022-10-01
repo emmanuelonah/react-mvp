@@ -15,15 +15,17 @@ export function stringifyOptions(options: any) {
   return Object.keys(options).reduce((acc, key) => {
     if (key === 'days') {
       return acc;
-    } else {
-      if (options[key] === false) {
-        return acc;
-      } else if (options[key] === true) {
-        return `${acc}; ${key}`;
-      } else {
-        return `${acc}; ${key}=${options[key]}`;
-      }
     }
+
+    if (options[key] === false) {
+      return acc;
+    }
+
+    if (options[key] === true) {
+      return `${acc}; ${key}`;
+    }
+
+    return `${acc}; ${key}=${options[key]}`;
   }, '');
 }
 
@@ -38,8 +40,7 @@ export const setCookie = (name: string, value: string, options?: CookieOptions) 
 
   const expires = new Date(Date.now() + optionsWithDefaults.days * 864e5).toUTCString();
 
-  document.cookie =
-    name + '=' + encodeURIComponent(value) + '; expires=' + expires + stringifyOptions(optionsWithDefaults);
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}${stringifyOptions(optionsWithDefaults)}`;
 };
 
 // export const getCookie = (name: string, initialValue = '') => {
@@ -68,9 +69,7 @@ export const getCookie = (name: string, initialValue = '') => {
 };
 
 export default function (key: string, initialValue?: string) {
-  const [item, setItem] = useState(() => {
-    return getCookie(key, initialValue);
-  });
+  const [item, setItem] = useState(() => getCookie(key, initialValue));
 
   const updateItem = (value: string, options: CookieOptions) => {
     setItem(value);

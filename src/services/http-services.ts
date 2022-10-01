@@ -35,7 +35,7 @@ type BaseRequestType = {
   requestHeaders?: AxiosRequestHeaders;
 };
 
-///HTTP GET
+/// HTTP GET
 type HttpGetRequestType = BaseRequestType;
 async function httpGetRequest<ResponseDataType>(
   params: HttpGetRequestType
@@ -49,7 +49,7 @@ async function httpGetRequest<ResponseDataType>(
   });
 }
 
-///HTTP POST
+/// HTTP POST
 interface httpPostRequestType extends BaseRequestType {
   data: Record<string, any>;
 }
@@ -66,7 +66,7 @@ async function httpPostRequest<ResponseDataType>(
   });
 }
 
-///HTTP PUT
+/// HTTP PUT
 async function httpPutRequest<ResponseDataType>(
   params: httpPostRequestType
 ): Promise<AxiosResponse<ResponseDataType, 'PUT'>> {
@@ -80,7 +80,7 @@ async function httpPutRequest<ResponseDataType>(
   });
 }
 
-///HTTP PATCH
+/// HTTP PATCH
 interface HttpPatchRequestType<DataType> extends BaseRequestType {
   method: 'PATCH';
   data?: DataType;
@@ -98,7 +98,7 @@ async function httpPatchRequest<MethodType, DataType, ResponseDataType>(
   });
 }
 
-///HTTP DELETE
+/// HTTP DELETE
 async function httpDeleteRequest<ResponseDataType>(
   urlSuffix: string
 ): Promise<AxiosResponse<ResponseDataType, 'DELETE'>> {
