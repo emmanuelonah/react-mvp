@@ -1,3 +1,22 @@
+/** ******************************************************
+ * @Home is the ```V```in the MVP(Model View Presenter)
+ * architecture. Its just a DUMMY component that
+ * renders nodes. DUMMY component meaning it has no internal
+ * logic.
+ *
+ * The beauty of this architectural pattern is that, when
+ * business and technological changes happens, there will be
+ * little or no UI update because of decoupling. Also, it makes
+ * UI very testable.
+ * I will be covering a new test pattern which i have been
+ * experimenting on called the ```environmental-based-test```
+ * in the current book i am writing. Just to give you a hint of
+ * the test pattern, it suits the MVP architecture and i am utilizing the
+ * Node JS runtime environment in the test pattern and thats where the
+ * ```environment``` came into the name 😄 (i can't wait to write about it)
+ *
+ */
+
 import { LoadingErrorDataRenderer } from 'components';
 
 import { UsersResolvedResponse } from 'UsersTypes';
