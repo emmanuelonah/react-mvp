@@ -11,9 +11,9 @@ const __reactMvcClient__ = axios.create({
 
 function composeHeaders(noCredentials = true) {
   if (noCredentials) {
-    return (theirHeaders?: AxiosRequestHeaders) => ({
+    return (requestHeaders?: AxiosRequestHeaders) => ({
       'Content-Type': 'application/json',
-      ...theirHeaders,
+      ...(requestHeaders ?? {}),
     });
   }
 
