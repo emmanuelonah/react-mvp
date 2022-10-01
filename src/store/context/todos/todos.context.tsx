@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import request, { AxiosError } from 'axios';
 
 import { createContext } from 'utils';
@@ -30,7 +30,7 @@ function todosReducer(state: TodosState, action: TodosAction): TodosState {
       return { ...state, isLoading: true };
 
     case TODOS_TYPES.GET_TODOS_SUCCESSFUL:
-      return { ...state, isLoading: false, data: action.payload?.data! };
+      return { isLoading: false, error: null, data: action.payload?.data! };
 
     case TODOS_TYPES.GET_TODOS_FAILED:
       return { ...state, isLoading: false, error: action.payload?.error! };
@@ -44,9 +44,9 @@ function todosReducer(state: TodosState, action: TodosAction): TodosState {
 /// CONTEXT BELOW
 /** ******************************************************* */
 interface TodosContextType extends TodosState {
-  asyncGetTodos(): Promise<void>;
+  asyncGetTodos(signal?: AbortSignal): Promise<void>;
 }
-const [TodosProvider, useTodosContext] = createContext<TodosContextType>('@react-mvc/todos');
+const [TodosProvider, useTodosContext] = createContext<TodosContextType>('@react-mvp/todos');
 
 /// COMPONENT BELOW
 /** ******************************************************* */
@@ -56,13 +56,11 @@ type TodosPropTypes = {
 function TodosStore(props: TodosPropTypes) {
   const [state, dispatch] = useReducer(todosReducer, INITIAL_TODOS_STATE);
 
-  /// ACTIONS BELOW
-  /** ******************************************************* */
-  async function asyncGetTodos() {
+  const asyncGetTodos = useCallback(async (signal?: AbortSignal) => {
     dispatch({ type: TODOS_TYPES.GET_TODOS_IS_LOADING });
 
     try {
-      const response = await httpGetRequest<TodosResolvedResponse>({ urlSuffix: 'todos' });
+      const response = await httpGetRequest<TodosResolvedResponse>({ urlSuffix: 'todos', otherConfigs: { signal } });
 
       dispatch({ type: TODOS_TYPES.GET_TODOS_SUCCESSFUL, payload: { data: response.data } });
     } catch (err) {
@@ -72,7 +70,7 @@ function TodosStore(props: TodosPropTypes) {
 
       dispatch({ type: TODOS_TYPES.GET_TODOS_FAILED, payload: { error: errorMsg } });
     }
-  }
+  }, []);
 
   return <TodosProvider value={{ ...state, asyncGetTodos }}>{props.children}</TodosProvider>;
 }

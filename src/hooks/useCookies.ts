@@ -46,7 +46,6 @@ const setCookie = (name: string, value: string, options?: CookieOptions) => {
 const getCookie = (name: string, initialValue = '') => {
   if (!isBrowser) return initialValue;
 
-  console.log('got here');
   const cookies = document.cookie.split('; ');
   const cookie = cookies.find((c) => c.split('=')[0] === name);
 

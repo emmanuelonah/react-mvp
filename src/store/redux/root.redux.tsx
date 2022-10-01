@@ -16,14 +16,14 @@ if (__DEV__) {
 
 const store: Store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));
 
-type ReactMvcReduxStorePropTypes = {
+type ReactMvpReduxStorePropTypes = {
   children: React.ReactElement;
 };
 
-function ReactMvcReduxStore(props: ReactMvcReduxStorePropTypes) {
+function ReactMvpReduxStore(props: ReactMvpReduxStorePropTypes) {
   return <Provider store={store}>{props.children}</Provider>;
 }
 
 export default {
-  Component: ReactMvcReduxStore,
+  Component: ReactMvpReduxStore,
 };

@@ -15,9 +15,9 @@ const contextComponents = [todos.Component];
 
 /// COMPONENT BELOW
 /** ****************************************** */
-type ReactMvcContextStorePropTypes = { children: React.ReactElement };
+type ReactMvpContextStorePropTypes = { children: React.ReactElement };
 
-function ReactMvcContextStore(props: ReactMvcContextStorePropTypes) {
+function ReactMvpContextStore(props: ReactMvpContextStorePropTypes) {
   return (
     <React.Fragment>
       {contextComponents.map((Component, index) => (
@@ -28,7 +28,7 @@ function ReactMvcContextStore(props: ReactMvcContextStorePropTypes) {
 }
 
 export default {
-  Component: ReactMvcContextStore,
+  Component: ReactMvpContextStore,
   useContextStore: {
     // just add your useContext hook into this object and it will be exposed in the src/store/useStore.ts
     useTodos: todos.useTodos,

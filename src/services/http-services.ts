@@ -1,11 +1,11 @@
-import axios, { AxiosResponse, type AxiosRequestHeaders } from 'axios';
+import axios, { AxiosResponse, AxiosRequestHeaders, AxiosRequestConfig } from 'axios';
 
 import { getCookie } from 'hooks';
 import { __DEV__, throwError } from 'utils';
 
 const SESSION_COOKIES_KEY = 'token';
 
-const __reactMvcClient__ = axios.create({
+const __reactMvpClient__ = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL || 'https://jsonplaceholder.typicode.com/',
 });
 
@@ -30,58 +30,62 @@ function composeHeaders(noCredentials = true) {
   });
 }
 
-type BaseRequestType = {
+type BaseRequestType<DataType> = {
   urlSuffix: string;
   requestHeaders?: AxiosRequestHeaders;
+  otherConfigs?: AxiosRequestConfig<DataType>;
 };
 
 /// HTTP GET
-type HttpGetRequestType = BaseRequestType;
+type HttpGetRequestType<DataType> = BaseRequestType<DataType>;
 async function httpGetRequest<ResponseDataType>(
-  params: HttpGetRequestType
+  params: HttpGetRequestType<ResponseDataType>
 ): Promise<AxiosResponse<ResponseDataType, 'GET'>> {
   const composedHeaders = composeHeaders();
 
-  return await __reactMvcClient__({
+  return await __reactMvpClient__({
     method: 'GET',
     url: params.urlSuffix,
     headers: composedHeaders(params.requestHeaders),
+    ...(params.otherConfigs ?? {}),
   });
 }
 
 /// HTTP POST
-interface httpPostRequestType extends BaseRequestType {
+interface httpPostRequestType<DataType> extends BaseRequestType<DataType> {
   data: Record<string, any>;
 }
 async function httpPostRequest<ResponseDataType>(
-  params: httpPostRequestType
+  params: httpPostRequestType<ResponseDataType>
 ): Promise<AxiosResponse<ResponseDataType, 'POST'>> {
   const composedHeaders = composeHeaders();
 
-  return await __reactMvcClient__({
+  return await __reactMvpClient__({
     method: 'POST',
     url: params.urlSuffix,
     headers: composedHeaders(params.requestHeaders),
     data: params.data,
+    ...(params.otherConfigs ?? {}),
   });
 }
 
 /// HTTP PUT
 async function httpPutRequest<ResponseDataType>(
-  params: httpPostRequestType
+  params: httpPostRequestType<ResponseDataType>
 ): Promise<AxiosResponse<ResponseDataType, 'PUT'>> {
   const composedHeaders = composeHeaders();
 
-  return await __reactMvcClient__({
+  return await __reactMvpClient__({
     method: 'PUT',
     url: params.urlSuffix,
     headers: composedHeaders(params.requestHeaders),
     data: params.data,
+    ...(params.otherConfigs ?? {}),
   });
 }
 
 /// HTTP PATCH
-interface HttpPatchRequestType<DataType> extends BaseRequestType {
+interface HttpPatchRequestType<DataType> extends BaseRequestType<DataType> {
   method: 'PATCH';
   data?: DataType;
 }
@@ -90,24 +94,27 @@ async function httpPatchRequest<MethodType, DataType, ResponseDataType>(
 ): Promise<AxiosResponse<ResponseDataType, MethodType>> {
   const composedHeaders = composeHeaders();
 
-  return await __reactMvcClient__({
+  return await __reactMvpClient__({
     method: params.method,
     url: params.urlSuffix,
     data: params.data,
     headers: composedHeaders(params.requestHeaders),
+    ...(params.otherConfigs ?? {}),
   });
 }
 
 /// HTTP DELETE
-async function httpDeleteRequest<ResponseDataType>(
-  urlSuffix: string
-): Promise<AxiosResponse<ResponseDataType, 'DELETE'>> {
+async function httpDeleteRequest<ResponseDataType>(params: {
+  urlSuffix: string;
+  otherConfigs?: AxiosRequestConfig<ResponseDataType>;
+}): Promise<AxiosResponse<ResponseDataType, 'DELETE'>> {
   const composedHeaders = composeHeaders();
 
-  return await __reactMvcClient__({
+  return await __reactMvpClient__({
     method: 'DELETE',
-    url: urlSuffix,
+    url: params.urlSuffix,
     headers: composedHeaders(),
+    ...(params.otherConfigs ?? {}),
   });
 }
 

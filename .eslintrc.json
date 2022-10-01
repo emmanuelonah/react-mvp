@@ -48,6 +48,7 @@
     "no-prototype-builtins": "off",
     "import/no-unresolved": "off",
     "object-curly-newline": "off",
+    "react/jsx-curly-newline": "off",
     "function-paren-newline": "off",
     "prefer-arrow-callback": "off",
     "react/no-array-index-key": "off",

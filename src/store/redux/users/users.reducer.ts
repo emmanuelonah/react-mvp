@@ -19,7 +19,7 @@ export function usersReducer(state = INITIAL_STATE, action: UsersActions): Users
       return { ...state, isLoading: true };
 
     case USERS_TYPES.GET_USERS_SUCCESSFUL:
-      return { ...state, isLoading: false, data: action.payload };
+      return { isLoading: false, error: null, data: action.payload };
 
     case USERS_TYPES.GET_USERS_FAILED:
       return { ...state, isLoading: false, error: action.payload };

@@ -1,4 +1,4 @@
-# React MVC Documentation
+# React MVP Documentation
 
 This is a concept/pattern for a book i am writing title the ***UI Action state architecture***
 

@@ -15,12 +15,12 @@ function getUsersFailed(payload: string) {
   return action(USERS_TYPES.GET_USERS_FAILED, payload);
 }
 
-function getUsers() {
-  return () => async (dispatch: (arg0: { type: string; payload?: string | UsersResolvedResponse }) => void) => {
+function getUsers(signal?: AbortSignal) {
+  return async (dispatch: (arg0: { type: string; payload?: string | UsersResolvedResponse }) => void) => {
     dispatch(action(USERS_TYPES.GET_USERS_IS_LOADING));
 
     try {
-      const response = await httpGetRequest<UsersResolvedResponse>({ urlSuffix: 'users' });
+      const response = await httpGetRequest<UsersResolvedResponse>({ urlSuffix: 'users', otherConfigs: { signal } });
 
       dispatch(getUsersSuccessful(response.data));
     } catch (err) {

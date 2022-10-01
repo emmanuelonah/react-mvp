@@ -8,6 +8,6 @@ const selectUsersIsLoading = createSelector([selectUsersState], (users) => users
 
 const selectUsersError = createSelector([selectUsersState], (users) => users.error);
 
-const selectUsers = createSelector([selectUsersState], (users) => users.users);
+const selectUsers = createSelector([selectUsersState], (users) => users.data);
 
 export { selectUsersIsLoading, selectUsersError, selectUsers };
