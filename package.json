@@ -20,7 +20,9 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.1",
+    "reselect": "^4.1.6",
     "styled-components": "^5.3.6",
+    "typesafe-actions": "^5.1.0",
     "typescript": "*",
     "web-vitals": "^2.1.0"
   },
@@ -66,7 +68,7 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.31.8",
-    "prettier": "2.7.1",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "prettier": "2.7.1"
   }
 }

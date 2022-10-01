@@ -11,7 +11,7 @@ interface CookieOptions {
   HttpOnly?: boolean;
 }
 
-export function stringifyOptions(options: any) {
+function stringifyOptions(options: any) {
   return Object.keys(options).reduce((acc, key) => {
     if (key === 'days') {
       return acc;
@@ -29,7 +29,7 @@ export function stringifyOptions(options: any) {
   }, '');
 }
 
-export const setCookie = (name: string, value: string, options?: CookieOptions) => {
+const setCookie = (name: string, value: string, options?: CookieOptions) => {
   if (!isBrowser) return;
 
   const optionsWithDefaults = {
@@ -43,18 +43,7 @@ export const setCookie = (name: string, value: string, options?: CookieOptions) 
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}${stringifyOptions(optionsWithDefaults)}`;
 };
 
-// export const getCookie = (name: string, initialValue = '') => {
-//   return (
-//     (isBrowser &&
-//       document.cookie.split('; ').reduce((r, v) => {
-//         const parts = v.split('=')
-//         return parts[0] === name ? decodeURIComponent(parts[1]) : r
-//       }, '')) ||
-//     initialValue
-//   )
-// }
-
-export const getCookie = (name: string, initialValue = '') => {
+const getCookie = (name: string, initialValue = '') => {
   if (!isBrowser) return initialValue;
 
   console.log('got here');
@@ -68,6 +57,7 @@ export const getCookie = (name: string, initialValue = '') => {
   return initialValue;
 };
 
+// eslint-disable-next-line func-names
 export default function (key: string, initialValue?: string) {
   const [item, setItem] = useState(() => getCookie(key, initialValue));
 
@@ -78,3 +68,5 @@ export default function (key: string, initialValue?: string) {
 
   return [item, updateItem] as const;
 }
+
+export { setCookie, getCookie, stringifyOptions };

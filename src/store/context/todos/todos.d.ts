@@ -1,12 +1,14 @@
-export interface Todo {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
+declare module 'TodosTypes' {
+  export interface Todo {
+    userId: number;
+    id: number;
+    title: string;
+    completed: boolean;
+  }
 
-export type TodosResolvedResponse = Todo[];
+  export type TodosResolvedResponse = Todo[];
 
-export interface TodosRejectedResponse {
-  message: string;
+  export interface TodosRejectedResponse {
+    message: string;
+  }
 }

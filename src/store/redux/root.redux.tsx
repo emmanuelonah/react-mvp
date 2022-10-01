@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
 import reduxLogger from 'redux-logger';
+import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, Middleware, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
@@ -16,14 +16,14 @@ if (__DEV__) {
 
 const store: Store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));
 
-type RootReduxPropTypes = {
+type ReactMvcReduxStorePropTypes = {
   children: React.ReactElement;
 };
 
-function RootRedux(props: RootReduxPropTypes) {
+function ReactMvcReduxStore(props: ReactMvcReduxStorePropTypes) {
   return <Provider store={store}>{props.children}</Provider>;
 }
 
 export default {
-  Component: RootRedux,
+  Component: ReactMvcReduxStore,
 };

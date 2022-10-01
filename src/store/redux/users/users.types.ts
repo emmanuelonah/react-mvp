@@ -1,1 +1,6 @@
-export {};
+export const USERS_TYPES = Object.freeze({
+  GET_USERS_IS_LOADING: '@react-mvc/GET_USERS_IS_LOADING',
+  GET_USERS_SUCCESSFUL: '@react-mvc/GET_USERS_SUCCESSFUL',
+  GET_USERS_FAILED: '@react-mvc/GET_USERS_FAILED',
+  GET_USERS_RESET: '@react-mvc/GET_USERS_RESET',
+});

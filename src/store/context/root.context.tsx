@@ -4,35 +4,33 @@ import todos from './todos/todos.context';
 
 /// UTILS BELOW
 /** *************************************************
- * @contextComponents is a collection of the
- * high level context component.
+ * @contextComponents is a collection of the high
+ * level context component.
  *
  * @information just add your context component
  * into this array and the context consumers will
  * have access to your context values
- */
+ ************************************************** */
 const contextComponents = [todos.Component];
 
 /// COMPONENT BELOW
 /** ****************************************** */
-type RootContextPropTypes = {
-  children: React.ReactElement;
-};
+type ReactMvcContextStorePropTypes = { children: React.ReactElement };
 
-export function RootContext(props: RootContextPropTypes) {
+function ReactMvcContextStore(props: ReactMvcContextStorePropTypes) {
   return (
-    <>
-      {contextComponents.map((Component) => (
-        <Component>{props.children}</Component>
+    <React.Fragment>
+      {contextComponents.map((Component, index) => (
+        <Component key={index.toString()}>{props.children}</Component>
       ))}
-    </>
+    </React.Fragment>
   );
 }
 
 export default {
-  Component: RootContext,
-  useRootContext: {
-    // just add your useContext hook into this object and it will be exposed in the src/stor/useStore.ts
+  Component: ReactMvcContextStore,
+  useContextStore: {
+    // just add your useContext hook into this object and it will be exposed in the src/store/useStore.ts
     useTodos: todos.useTodos,
   },
 };
