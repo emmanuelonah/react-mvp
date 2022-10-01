@@ -1,0 +1,12 @@
+**/node_modules/**
+**/build/**
+
+dist-storybook/**
+prod-storybook/**
+**/.storybook/**
+**/cypress/**
+
+/cypress.config.ts
+*.stories.@(ts|tsx)
+*.test.@(ts|tsx|js|jsx)
+*.spec.@(ts|tsx|js|jsx)

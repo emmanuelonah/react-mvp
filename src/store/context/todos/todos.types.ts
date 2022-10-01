@@ -1,0 +1,6 @@
+export const TODOS_TYPES = Object.freeze({
+  GET_TODOS_IS_LOADING: '@react-mvc/GET_TODOS_IS_LOADING',
+  GET_TODOS_SUCCESSFUL: '@react-mvc/GET_TODOS_SUCCESSFUL',
+  GET_TODOS_FAILED: '@react-mvc/GET_TODOS_FAILED',
+  GET_TODOS_RESET: '@react-mvc/GET_TODOS_RESET',
+});
