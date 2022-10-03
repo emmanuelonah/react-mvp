@@ -1,4 +1,5 @@
 export { If } from './if/if';
+export { Card } from './card/card';
 export { Loader } from './loader/loader';
 export { AccessibleIcon } from './accessible-icon/accessible-icon';
 export {

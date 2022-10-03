@@ -2,7 +2,7 @@ import React, { useReducer, useCallback } from 'react';
 import request, { AxiosError } from 'axios';
 
 import { createContext } from 'utils';
-import { ValueOf } from 'types/global';
+import { ValueOf } from 'GlobalTypes';
 import { httpGetRequest } from 'services';
 import { TODOS_TYPES } from './todos.types';
 import type { TodosResolvedResponse, TodosRejectedResponse } from 'TodosTypes';

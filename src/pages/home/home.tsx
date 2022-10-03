@@ -17,19 +17,79 @@
  *
  */
 
-import { LoadingErrorDataRenderer } from 'components';
+import styled from 'styled-components';
 
+import { Main } from 'layouts';
+import { ValueOf } from 'GlobalTypes';
+import { usePresenter } from './hooks/usePresenter';
 import { UsersResolvedResponse } from 'UsersTypes';
 import { TodosResolvedResponse } from 'TodosTypes';
+import { LoadingErrorDataRenderer, Card } from 'components';
 
-import { usePresenter } from './hooks/usePresenter';
+/// UTILS BELOW
+/** ***************************************************** */
+const STATUS_TYPES = {
+  COMPLETED: 'Completed',
+  NOT_COMPLETED: 'Not completed',
+};
 
+const Container = styled(Main)`
+  padding: 1rem;
+`;
+
+const Heading = styled.h1`
+  font-size: 1.3rem;
+  text-align: center;
+`;
+
+const WrapperParent = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const Title = styled.h2`
+  font-size: 0.9rem;
+`;
+
+const Wrapper = styled(Card)`
+  margin: 0 0.5em;
+  margin-bottom: 1rem;
+`;
+
+const List = styled.ul`
+  & li {
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+
+    & a {
+      color: dodgerblue;
+      font-size: 0.75rem;
+      text-decoration: underline;
+    }
+
+    & address {
+      font-style: normal;
+    }
+  }
+`;
+
+const StatusTag = styled.div<{ status: ValueOf<typeof STATUS_TYPES> }>`
+  background-color: ${(props) => (props.status === 'Completed' ? '#1e90ff' : '#fcd666')};
+  border: 0;
+  color: ${(props) => (props.status === 'Completed' ? '#fff' : '#000')};
+  font-size: 0.8em;
+  padding: 5px;
+  width: fit-content;
+`;
+
+///  COMPONENT BELOW
+/** ***************************************************** */
 export default function Home() {
   const { isLoadingTodos, todosError, todosData, isLoadingUsers, usersError, usersData } = usePresenter();
 
   return (
-    <>
-      <h3>Welcome to React MVP Experiment 🧪 </h3>
+    <Container>
+      <Heading>Welcome to React MVP Experiment 🧪 </Heading>
 
       <LoadingErrorDataRenderer<UsersResolvedResponse>
         endpoint="get/users"
@@ -39,21 +99,25 @@ export default function Home() {
         hasData={!!usersData?.length}
       >
         {(users) => (
-          <>
-            <h4>Users 👨‍🏫</h4>
+          <section>
+            <Title>Users 👨‍🏫</Title>
 
-            {users?.slice(0, 5).map(({ id, name, email, address }) => (
-              <ul key={id}>
-                <li>{name}</li>
-                <li>
-                  <a href={`mailto:${email}`}>{email}</a>
-                </li>
-                <li>
-                  <address>{`${address.street} ${address.city}`}</address>
-                </li>
-              </ul>
-            ))}
-          </>
+            <WrapperParent>
+              {users?.slice(0, 5).map(({ id, name, email, address }) => (
+                <Wrapper key={id}>
+                  <List>
+                    <li>{name}</li>
+                    <li>
+                      <a href={`mailto:${email}`}>{email}</a>
+                    </li>
+                    <li>
+                      <address>{`${address.street} ${address.city}`}</address>
+                    </li>
+                  </List>
+                </Wrapper>
+              ))}
+            </WrapperParent>
+          </section>
         )}
       </LoadingErrorDataRenderer>
 
@@ -65,19 +129,29 @@ export default function Home() {
         hasData={!!todosData?.length}
       >
         {(todos) => (
-          <>
-            <h4>TODOS 📝</h4>
+          <section>
+            <Title>TODOS 📝</Title>
 
-            {todos?.slice(0, 5).map(({ id, userId, title, completed }) => (
-              <ul key={id}>
-                <li>{userId}</li>
-                <li>{title}</li>
-                <li>{completed}</li>
-              </ul>
-            ))}
-          </>
+            <WrapperParent>
+              {todos?.slice(0, 5).map(({ id, userId, title, completed }) => {
+                const status = completed ? STATUS_TYPES.COMPLETED : STATUS_TYPES.NOT_COMPLETED;
+
+                return (
+                  <Wrapper key={id}>
+                    <List>
+                      <li>
+                        <StatusTag status={status}>{status}</StatusTag>
+                      </li>
+                      <li>{title}</li>
+                      <li>{userId}</li>
+                    </List>
+                  </Wrapper>
+                );
+              })}
+            </WrapperParent>
+          </section>
         )}
       </LoadingErrorDataRenderer>
-    </>
+    </Container>
   );
 }
