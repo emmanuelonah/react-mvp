@@ -1,5 +1,10 @@
+import { render } from '@testing-library/react';
+
+import { Main } from '..';
+
 describe('<Main/>', () => {
-  it('should just pass for now', () => {
-    expect(true).toBe(true);
+  test('should render Component', () => {
+    const { container } = render(<Main>Hello React Testing Library</Main>);
+    expect(container.firstChild).toMatchSnapshot();
   });
 });

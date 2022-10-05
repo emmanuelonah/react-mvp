@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Main/> should render Component 1`] = `
+<main
+  data-testid="main"
+  id="main"
+>
+  Hello React Testing Library
+</main>
+`;
