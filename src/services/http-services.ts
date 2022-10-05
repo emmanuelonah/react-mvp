@@ -53,7 +53,7 @@ async function httpGetRequest<ResponseDataType>(
 
 /// HTTP POST
 interface httpPostRequestType<DataType> extends BaseRequestType<DataType> {
-  data: Record<string, any>;
+  data: DataType;
 }
 async function httpPostRequest<ResponseDataType>(
   params: httpPostRequestType<ResponseDataType>
@@ -70,8 +70,11 @@ async function httpPostRequest<ResponseDataType>(
 }
 
 /// HTTP PUT
+interface httpPutRequestType<DataType> extends BaseRequestType<DataType> {
+  data: DataType;
+}
 async function httpPutRequest<ResponseDataType>(
-  params: httpPostRequestType<ResponseDataType>
+  params: httpPutRequestType<ResponseDataType>
 ): Promise<AxiosResponse<ResponseDataType, 'PUT'>> {
   const composedHeaders = composeHeaders();
 
@@ -86,16 +89,15 @@ async function httpPutRequest<ResponseDataType>(
 
 /// HTTP PATCH
 interface HttpPatchRequestType<DataType> extends BaseRequestType<DataType> {
-  method: 'PATCH';
   data?: DataType;
 }
-async function httpPatchRequest<MethodType, DataType, ResponseDataType>(
+async function httpPatchRequest<DataType, ResponseDataType>(
   params: HttpPatchRequestType<DataType>
-): Promise<AxiosResponse<ResponseDataType, MethodType>> {
+): Promise<AxiosResponse<ResponseDataType>> {
   const composedHeaders = composeHeaders();
 
   return await __reactMvpClient__({
-    method: params.method,
+    method: 'PATCH',
     url: params.urlSuffix,
     data: params.data,
     headers: composedHeaders(params.requestHeaders),

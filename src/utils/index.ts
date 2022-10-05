@@ -1,5 +1,5 @@
 export * from './env';
-export * from './reportWebVitals';
+export * from './report-web-vitals';
 export { throwError } from './throw-error';
 export { composeEvents } from './compose-events';
 export { createContext } from './create-context';

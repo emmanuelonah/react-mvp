@@ -19,7 +19,7 @@
 
 import styled from 'styled-components';
 
-import { Main } from 'layouts';
+import { Main as MainComponent, Header } from 'layouts';
 import { ValueOf } from 'GlobalTypes';
 import { usePresenter } from './hooks/usePresenter';
 import { UsersResolvedResponse } from 'UsersTypes';
@@ -33,13 +33,8 @@ const STATUS_TYPES = {
   NOT_COMPLETED: 'Not completed',
 };
 
-const Container = styled(Main)`
+const Main = styled(MainComponent)`
   padding: 1rem;
-`;
-
-const Heading = styled.h1`
-  font-size: 1.3rem;
-  text-align: center;
 `;
 
 const WrapperParent = styled.div`
@@ -49,6 +44,7 @@ const WrapperParent = styled.div`
 
 const Title = styled.h2`
   font-size: 0.9rem;
+  padding: 0.5rem 0;
 `;
 
 const Wrapper = styled(Card)`
@@ -88,70 +84,70 @@ export default function Home() {
   const { isLoadingTodos, todosError, todosData, isLoadingUsers, usersError, usersData } = usePresenter();
 
   return (
-    <Container>
-      <Heading>Welcome to React MVP Experiment 🧪 </Heading>
+    <>
+      <Header />
 
-      <LoadingErrorDataRenderer<UsersResolvedResponse>
-        endpoint="get/users"
-        isLoading={isLoadingUsers}
-        error={usersError}
-        data={usersData}
-        hasData={!!usersData?.length}
-      >
-        {(users) => (
-          <section>
-            <Title>Users 👨‍🏫</Title>
-
-            <WrapperParent>
-              {users?.slice(0, 5).map(({ id, name, email, address }) => (
-                <Wrapper key={id}>
-                  <List>
-                    <li>{name}</li>
-                    <li>
-                      <a href={`mailto:${email}`}>{email}</a>
-                    </li>
-                    <li>
-                      <address>{`${address.street} ${address.city}`}</address>
-                    </li>
-                  </List>
-                </Wrapper>
-              ))}
-            </WrapperParent>
-          </section>
-        )}
-      </LoadingErrorDataRenderer>
-
-      <LoadingErrorDataRenderer<TodosResolvedResponse>
-        endpoint="get/todos"
-        isLoading={isLoadingTodos}
-        error={todosError}
-        data={todosData!}
-        hasData={!!todosData?.length}
-      >
-        {(todos) => (
-          <section>
-            <Title>TODOS 📝</Title>
-
-            <WrapperParent>
-              {todos?.slice(0, 5).map(({ id, userId, title, completed }) => {
-                const status = completed ? STATUS_TYPES.COMPLETED : STATUS_TYPES.NOT_COMPLETED;
-
-                return (
+      <Main>
+        <LoadingErrorDataRenderer<UsersResolvedResponse>
+          endpoint="get/users"
+          isLoading={isLoadingUsers}
+          error={usersError}
+          data={usersData}
+          hasData={!!usersData?.length}
+        >
+          {(users) => (
+            <section>
+              <Title>Users 👨‍🏫</Title>
+              <WrapperParent>
+                {users?.slice(0, 5).map(({ id, name, email, address }) => (
                   <Wrapper key={id}>
                     <List>
+                      <li>{name}</li>
                       <li>
-                        <StatusTag status={status}>{status}</StatusTag>
+                        <a href={`mailto:${email}`}>{email}</a>
                       </li>
-                      <li>{title}</li>
-                      <li>{userId}</li>
+                      <li>
+                        <address>{`${address.street} ${address.city}`}</address>
+                      </li>
                     </List>
                   </Wrapper>
-                );
-              })}
-            </WrapperParent>
-          </section>
-        )}
-      </LoadingErrorDataRenderer>
-    </Container>
+                ))}
+              </WrapperParent>
+            </section>
+          )}
+        </LoadingErrorDataRenderer>
+
+        <LoadingErrorDataRenderer<TodosResolvedResponse>
+          endpoint="get/todos"
+          isLoading={isLoadingTodos}
+          error={todosError}
+          data={todosData!}
+          hasData={!!todosData?.length}
+        >
+          {(todos) => (
+            <section>
+              <Title>TODOS 📝</Title>
+              <WrapperParent>
+                {todos?.slice(0, 5).map(({ id, userId, title, completed }) => {
+                  const status = completed ? STATUS_TYPES.COMPLETED : STATUS_TYPES.NOT_COMPLETED;
+
+                  return (
+                    <Wrapper key={id}>
+                      <List>
+                        <li>
+                          <StatusTag status={status}>{status}</StatusTag>
+                        </li>
+                        <li>{title}</li>
+                        <li>{userId}</li>
+                      </List>
+                    </Wrapper>
+                  );
+                })}
+              </WrapperParent>
+            </section>
+          )}
+        </LoadingErrorDataRenderer>
+      </Main>
+    </>
   );
 }
