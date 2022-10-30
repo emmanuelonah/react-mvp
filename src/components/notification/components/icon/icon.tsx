@@ -5,6 +5,20 @@ import { If } from 'components';
 import { ChildrenPropTypes } from '../../notification.view';
 import { IconNotification } from './assets/icon-notification.svg';
 
+const Parent = styled.div`
+  padding: 1rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #eee;
+    border-radius: 50%;
+  }
+`;
+
 const Container = styled.button`
   background-color: transparent;
   border: 0;
@@ -28,10 +42,12 @@ interface IconPropTypes extends ChildrenPropTypes {
 
 export function Icon({ hasNewNotification, openNotification }: IconPropTypes) {
   return (
-    <Container type="button" onClick={openNotification}>
-      <IconNotification />
+    <Parent>
+      <Container type="button" onClick={openNotification}>
+        <IconNotification />
 
-      <If condition={hasNewNotification} do={<Indicator />} />
-    </Container>
+        <If condition={hasNewNotification} do={<Indicator />} />
+      </Container>
+    </Parent>
   );
 }

@@ -18,8 +18,14 @@ const Container = styled(Card)`
   padding: 0;
 `;
 
+const HEADING_COMPONENT_INDEX = 0;
+
+type CloseNotification = {
+  closeNotification?: () => void;
+};
+
 interface ContentPropTypes extends ChildrenPropTypes {
-  children: React.ReactNode;
+  children: React.ReactElement<CloseNotification> | React.ReactElement<CloseNotification>[];
 }
 
 export function Content({ shown, closeNotification, children }: ContentPropTypes) {
@@ -29,7 +35,15 @@ export function Content({ shown, closeNotification, children }: ContentPropTypes
       do={
         <Overlay>
           <ModalWrapper elementType="notification" lock isOpen={shown} onClose={closeNotification}>
-            <Container>{children}</Container>
+            <Container>
+              {React.Children.map(children, function renderEachChildComponent(child, i) {
+                if (React.isValidElement(child) && i === HEADING_COMPONENT_INDEX) {
+                  return React.cloneElement(child, { closeNotification });
+                }
+
+                return child;
+              })}
+            </Container>
           </ModalWrapper>
         </Overlay>
       }

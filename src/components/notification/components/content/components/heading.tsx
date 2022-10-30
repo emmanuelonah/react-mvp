@@ -14,6 +14,18 @@ const Container = styled.h1`
     background-color: transparent;
     border: 0;
     border: none;
+    width: 30px;
+    height: 30px;
+    transition: all 0.5s ease-out;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: #eee;
+      border-radius: 50%;
+    }
   }
 `;
 
