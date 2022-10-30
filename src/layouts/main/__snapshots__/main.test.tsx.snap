@@ -2,6 +2,7 @@
 
 exports[`<Main/> should render Component 1`] = `
 <main
+  class="sc-bcXHqe dinfdM"
   data-testid="main"
   id="main"
 >
