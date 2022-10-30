@@ -19,12 +19,12 @@
 
 import styled from 'styled-components';
 
-import { Main as MainComponent, Header } from 'layouts';
 import { ValueOf } from 'GlobalTypes';
-import { usePresenter } from './hooks/usePresenter';
+import { Main, Header } from 'layouts';
 import { UsersResolvedResponse } from 'UsersTypes';
 import { TodosResolvedResponse } from 'TodosTypes';
 import { LoadingErrorDataRenderer, Card } from 'components';
+import { usePresenter } from './hooks/usePresenter.presenter';
 
 /// UTILS BELOW
 /** ***************************************************** */
@@ -33,13 +33,10 @@ const STATUS_TYPES = {
   NOT_COMPLETED: 'Not completed',
 };
 
-const Main = styled(MainComponent)`
-  padding: 1rem;
-`;
-
 const WrapperParent = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const Title = styled.h2`
@@ -58,7 +55,7 @@ const List = styled.ul`
     font-size: 0.9rem;
 
     & a {
-      color: dodgerblue;
+      color: #1e90ff;
       font-size: 0.75rem;
       text-decoration: underline;
     }
@@ -99,7 +96,7 @@ export default function Home() {
             <section>
               <Title>Users 👨‍🏫</Title>
               <WrapperParent>
-                {users?.slice(0, 5).map(({ id, name, email, address }) => (
+                {users?.slice(0, 6).map(({ id, name, email, address }) => (
                   <Wrapper key={id}>
                     <List>
                       <li>{name}</li>
@@ -128,7 +125,7 @@ export default function Home() {
             <section>
               <Title>TODOS 📝</Title>
               <WrapperParent>
-                {todos?.slice(0, 5).map(({ id, userId, title, completed }) => {
+                {todos?.slice(0, 6).map(({ id, userId, title, completed }) => {
                   const status = completed ? STATUS_TYPES.COMPLETED : STATUS_TYPES.NOT_COMPLETED;
 
                   return (
