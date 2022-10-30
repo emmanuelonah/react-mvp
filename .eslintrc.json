@@ -20,8 +20,10 @@
   "rules": {
     "eqeqeq": "off",
     "no-var": "off",
+    "no-caller": "off",
     "no-proto": "off",
     "camelcase": "off",
+    "guard-for-in": "off",
     "wrap-iife": "off",
     "no-shadow": "off",
     "no-console": "off",
@@ -52,6 +54,7 @@
     "function-paren-newline": "off",
     "prefer-arrow-callback": "off",
     "react/no-array-index-key": "off",
+    "no-restricted-properties": "off",
     "no-unused-expressions": "off",
     "implicit-arrow-linebreak": "off",
     "react/jsx-wrap-multilines": "off",

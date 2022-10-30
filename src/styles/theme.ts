@@ -16,6 +16,13 @@ export const theme = {
     xl: '1.25rem',
     xxl: '1.5rem',
   },
+  zIndexes: {
+    step1: '100',
+    step2: '200',
+    step3: '300',
+    overlay: '500',
+    modal: '1000',
+  },
   lineHeight: {
     xs: '1.5',
     sm: '1.75',
@@ -63,7 +70,4 @@ export const theme = {
     md: '10px',
   },
   breakpionts: ['40em', '52em', '64em', '80em'],
-  zIndexes: {
-    modal: 2,
-  },
 } as const;
