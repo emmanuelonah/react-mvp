@@ -29,7 +29,7 @@ const Container = styled.h1`
   }
 `;
 
-type HeadingPropTypes = {
+export type HeadingPropTypes = {
   closeNotification?: () => void;
   children: React.ReactNode;
 };

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { ModalWrapper, Overlay, Card, If } from 'components';
 import { ChildrenPropTypes } from '../../notification.view';
+import { HeadingPropTypes, Heading } from './components/heading';
 
 const Container = styled(Card)`
   width: 90%;
@@ -17,8 +18,6 @@ const Container = styled(Card)`
   max-height: 675px;
   padding: 0;
 `;
-
-const HEADING_COMPONENT_INDEX = 0;
 
 type CloseNotification = {
   closeNotification?: () => void;
@@ -36,9 +35,13 @@ export function Content({ shown, closeNotification, children }: ContentPropTypes
         <Overlay>
           <ModalWrapper elementType="notification" lock isOpen={shown} onClose={closeNotification}>
             <Container>
-              {React.Children.map(children, function renderEachChildComponent(child, i) {
-                if (React.isValidElement(child) && i === HEADING_COMPONENT_INDEX) {
-                  return React.cloneElement(child, { closeNotification });
+              {React.Children.map(children, function renderEachChildComponent(child) {
+                const validChild = child as React.ReactElement<
+                  React.PropsWithChildren<HeadingPropTypes & ContentPropTypes>
+                >;
+
+                if (React.isValidElement(validChild) && validChild.type === Heading) {
+                  return React.cloneElement(validChild, { closeNotification });
                 }
 
                 return child;
