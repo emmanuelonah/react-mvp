@@ -16,8 +16,8 @@ type NotificationElement = React.ElementRef<'div'>;
 interface NotificationPropTypes extends PrimitiveDivProps {
   children: React.ReactElement<ChildrenPropTypes>[];
   isOpen?: boolean;
-  onClose?<ReturnType>(): ReturnType;
-  onOpen?<ReturnType>(): ReturnType;
+  onClose?(): any;
+  onOpen?(): any;
 }
 
 const Notification = React.forwardRef<NotificationElement, NotificationPropTypes>(function Notification(
