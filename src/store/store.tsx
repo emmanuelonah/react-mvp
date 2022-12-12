@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { Store as Internals } from 'components';
+
 import reduxStore from './redux/root.redux';
 import mobXStore from './mobx/root.observer';
 import contextStore from './context/root.context';
@@ -12,7 +14,9 @@ export function Store(props: StorePropTypes) {
   return (
     <reduxStore.Component>
       <mobXStore.Component>
-        <contextStore.Component>{childElement}</contextStore.Component>
+        <contextStore.Component>
+          <Internals>{childElement}</Internals>
+        </contextStore.Component>
       </mobXStore.Component>
     </reduxStore.Component>
   );

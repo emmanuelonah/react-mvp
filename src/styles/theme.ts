@@ -1,3 +1,10 @@
+/**
+ * @theme this object serves as our design-tokens object
+ *
+ * @Note any style object must be added to this theme and access only from this object
+ *
+ */
+
 export const theme = {
   fonts: {
     primary: '"Poppins", sans-serif',

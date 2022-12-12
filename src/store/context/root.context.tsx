@@ -2,19 +2,16 @@ import * as React from 'react';
 
 import todos from './todos/todos.context';
 
-/// UTILS BELOW
-/** *************************************************
+/**
  * @contextComponents is a collection of the high
  * level context component.
  *
  * @information just add your context component
  * into this array and the context consumers will
  * have access to your context values
- ************************************************** */
+ */
 const contextComponents = [todos.Component];
 
-/// COMPONENT BELOW
-/** ****************************************** */
 type ReactMvpContextStorePropTypes = { children: React.ReactElement };
 
 function ReactMvpContextStore(props: ReactMvpContextStorePropTypes) {
