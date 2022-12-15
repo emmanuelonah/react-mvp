@@ -46,19 +46,19 @@ export class Store {
     },
   };
 
-  set currency(curr: Currency) {
+  public set currency(curr: Currency) {
     this._currency = curr;
   }
 
-  get currency() {
+  public get currency() {
     return this._currency;
   }
 
-  set organization(org: Organization) {
+  public set organization(org: Organization) {
     this._organization = org;
   }
 
-  get organization() {
+  public get organization() {
     return this._organization;
   }
 }
