@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { CSPAttributes, DIRECTIVES, VALUES } from './models/csp.model';
-import { useCsp } from './hooks/useCsp';
+import { useCsp } from './hooks/useCsp.presenter';
 
 type CspPropTypes = {
   attributes: CSPAttributes;
