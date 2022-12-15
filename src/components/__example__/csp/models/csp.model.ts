@@ -119,6 +119,8 @@ class CSP {
   public apply() {
     const normalizedAttributes = this.normalize();
 
+    console.log('APPLYING', normalizedAttributes);
+
     Object.entries(normalizedAttributes).forEach(([directive, value]) => {
       const metaElement = document.createElement('meta');
 
@@ -126,8 +128,6 @@ class CSP {
       metaElement.setAttribute('content', `${directive} ${value}`);
       document.head.appendChild(metaElement);
     });
-
-    console.log('APPLYING', normalizedAttributes);
   }
 }
 
