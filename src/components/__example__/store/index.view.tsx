@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
 import { createContext } from 'utils';
 import { Store as StoreModel, Currency, Organization, Donation } from './models/store.model';
@@ -7,9 +7,9 @@ type StoreContextType = {
   currency: Currency;
   organization: Organization;
   donation: Donation | null;
-  setCurrency: React.Dispatch<React.SetStateAction<Currency>>;
-  setOrganization: React.Dispatch<React.SetStateAction<Organization>>;
-  setDonation: React.Dispatch<React.SetStateAction<Donation | null>>;
+  updateCurrency: (curr: Currency) => void;
+  updateOrganization: (org: Organization) => void;
+  updateDonation: React.Dispatch<React.SetStateAction<Donation | null>>;
 };
 
 const [StoreProvider, useStore] = createContext<StoreContextType>('StoreContext');
@@ -24,16 +24,32 @@ function Store(props: StorePropTypes) {
   const [organization, setOrganization] = useState(() => store.organization);
   const [donation, setDonation] = useState<Donation | null>(null);
 
-  const values = React.useMemo(
+  const updateCurrency = useCallback(
+    (curr: Currency) => {
+      store.currency = curr;
+      setCurrency(curr);
+    },
+    [store]
+  );
+
+  const updateOrganization = useCallback(
+    (org: Organization) => {
+      store.organization = org;
+      setOrganization(organization);
+    },
+    [organization, store]
+  );
+
+  const values = useMemo(
     () => ({
       currency,
       organization,
       donation,
-      setCurrency,
-      setOrganization,
-      setDonation,
+      updateCurrency,
+      updateOrganization,
+      updateDonation: setDonation,
     }),
-    [currency, donation, organization]
+    [currency, donation, organization, updateCurrency, updateOrganization]
   );
 
   return <StoreProvider value={values}>{props.children}</StoreProvider>;

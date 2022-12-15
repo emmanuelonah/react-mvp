@@ -13,4 +13,4 @@ export {
   type VisuallyHiddenPropTypes,
 } from './visuallyhidden';
 export { AsyncRenderer } from './async-renderer';
-export { Store, Notification } from './__example__';
+export { Store, Notification, Csp } from './__example__';
