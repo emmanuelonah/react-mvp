@@ -1,7 +1,6 @@
-/* eslint-disable class-methods-use-this */
 import 'colors';
 
-import { __DEV__ } from 'utils';
+import { __DEV__, throwError } from 'utils';
 
 /**
  * @clientDb
@@ -10,15 +9,15 @@ import { __DEV__ } from 'utils';
  *
  * @methods - clientDb methods:
  *
+ * @initialize
+ *
  * @create
  *
- * @insert
- *
- * @find
+ * @read
  *
  * @update
  *
- * @remove
+ * @delete
  *
  * @count
  *
@@ -43,11 +42,21 @@ import { __DEV__ } from 'utils';
 export class ClientDb {
   private CLIENT_DB!: IDBOpenDBRequest;
 
+  private constraint(callee: Function) {
+    if (!this.CLIENT_DB.result) {
+      throwError(
+        'ClientDBReferenceError',
+        'You must create a database using the ```ClientDB``` instance to process',
+        callee
+      );
+    }
+  }
+
   /**
-   * @create
+   * @initialize
    *
    */
-  public create(dbName: string) {
+  public initialize(dbName: string): Promise<IDBDatabase> {
     ///
     this.CLIENT_DB = window.indexedDB.open(dbName, 4);
 
@@ -69,28 +78,32 @@ export class ClientDb {
 
     ///
     return new Promise((resolve, reject) => {
-      if (this.CLIENT_DB.onsuccess) this.CLIENT_DB.onsuccess = (ev) => resolve(ev);
-      else this.CLIENT_DB.onerror = (ev) => reject(ev);
+      if (this.CLIENT_DB.onsuccess) resolve(this.CLIENT_DB.result);
+      else reject(this.CLIENT_DB.result);
     });
   }
 
   /**
-   * @insert
+   * @create
    *
    */
-  public insert() {
+  public create<Response = any>(): Promise<Error | Response> {
+    this.constraint(this.create);
+
     return new Promise((resolve, reject) => {
       console.log(resolve, reject);
     });
   }
 
   /**
-   * @find
+   * @read
    *
    * @queries
    *
    */
-  public find() {
+  public read<Response = any>(): Promise<Error | Response> {
+    this.constraint(this.read);
+
     return new Promise((resolve, reject) => {
       console.log(resolve, reject);
     });
@@ -100,17 +113,21 @@ export class ClientDb {
    * @update
    *
    */
-  public update() {
+  public update<Response = any>(): Promise<Error | Response> {
+    this.constraint(this.update);
+
     return new Promise((resolve, reject) => {
       console.log(resolve, reject);
     });
   }
 
   /**
-   * @remove
+   * @delete
    *
    */
-  public remove() {
+  public delete<Response = any>(): Promise<Error | Response> {
+    this.constraint(this.delete);
+
     return new Promise((resolve, reject) => {
       console.log(resolve, reject);
     });
@@ -122,9 +139,15 @@ export class ClientDb {
    * @queries - for different database queries or columns queries
    *
    */
-  public count() {
+  public count<Response = any>(): Promise<Error | Response> {
+    this.constraint(this.count);
+
     return new Promise((resolve, reject) => {
       console.log(resolve, reject);
     });
+  }
+
+  public get dbInfo() {
+    return this.CLIENT_DB.result;
   }
 }
