@@ -3,6 +3,11 @@ declare module 'GlobalTypes' {
 
   export type KeyOf<T> = keyof T;
 
+  type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
+    {
+      [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+    }[Keys];
+
   type NotificationAction = {
     action: string;
     icon?: string;

@@ -1,4 +1,4 @@
-export { __DEV__, __PROD__, __TEST__ } from './env';
+export { __DEV__, __PROD__, __TEST__, __HTTPS__, __HTTP__ } from './env';
 export { TestWrapper } from './test';
 export { throwError } from './throw-error';
 export { composeEvents } from './compose-events';

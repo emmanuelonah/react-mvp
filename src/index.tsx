@@ -7,6 +7,8 @@ import { Csp } from 'components';
 import { Store } from 'store/store';
 import { __DEV__, reportWebVitals } from 'utils';
 
+import 'utils/json-prune';
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(

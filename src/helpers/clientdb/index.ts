@@ -1,7 +1,3 @@
-import 'colors';
-
-import { __DEV__, throwError } from 'utils';
-
 /**
  * @clientDb
  *
@@ -18,8 +14,6 @@ import { __DEV__, throwError } from 'utils';
  * @update
  *
  * @delete
- *
- * @count
  *
  * @version - we use IndexDB version 4
  *
@@ -39,54 +33,78 @@ import { __DEV__, throwError } from 'utils';
  *
  */
 
+import 'colors';
+
+import { __DEV__, throwError } from 'utils';
+
+interface CustomTarget extends EventTarget {
+  result: IDBRequest;
+}
+
+interface CustomEvent extends Omit<IDBVersionChangeEvent, 'target'> {
+  target: CustomTarget;
+}
+
 export class ClientDb {
-  private CLIENT_DB!: IDBOpenDBRequest;
+  private _CLIENT_DB_REQUEST!: IDBOpenDBRequest;
 
   private constraint(callee: Function) {
-    if (!this.CLIENT_DB.result) {
+    if (!this._CLIENT_DB_REQUEST.result) {
       throwError(
         'ClientDBReferenceError',
-        'You must create a database using the ```ClientDB``` instance to process',
+        'You must initialized a database using the ```ClientDB``` instance to process',
         callee
       );
     }
   }
 
-  /**
-   * @initialize
-   *
-   */
+  private onSuccess(arg: {
+    ev: CustomEvent;
+    loggerText: string;
+    resolve: (value: IDBDatabase | PromiseLike<IDBDatabase>) => void;
+  }) {
+    if (__DEV__) {
+      console.log(arg.loggerText);
+      console.log(JSON.stringify(arg.ev));
+    }
+
+    arg.resolve(this._CLIENT_DB_REQUEST.result);
+  }
+
+  private onError(arg: { ev: CustomEvent; loggerText: string; reject: (reason?: any) => void }) {
+    if (__DEV__) {
+      console.log(arg.loggerText);
+      console.log(JSON.stringify(arg.ev));
+    }
+
+    arg.reject(this._CLIENT_DB_REQUEST.result);
+  }
+
   public initialize(dbName: string): Promise<IDBDatabase> {
-    ///
-    this.CLIENT_DB = window.indexedDB.open(dbName, 4);
+    this._CLIENT_DB_REQUEST = window.indexedDB.open(dbName, 4);
 
-    ///
-    this.CLIENT_DB.onsuccess = (ev) => {
-      if (__DEV__) {
-        console.log(`SUCCESSFULLY OPENED ${dbName.blue} DATABASE`.green);
-        console.log(JSON.stringify(ev));
-      }
-    };
-
-    ///
-    this.CLIENT_DB.onerror = (ev) => {
-      if (__DEV__) {
-        console.log(`FAILED TO OPEN ${dbName.white} DATABASE`.red);
-        console.log(JSON.stringify(ev));
-      }
-    };
-
-    ///
     return new Promise((resolve, reject) => {
-      if (this.CLIENT_DB.onsuccess) resolve(this.CLIENT_DB.result);
-      else reject(this.CLIENT_DB.result);
+      this._CLIENT_DB_REQUEST.onupgradeneeded = (ev) => {
+        const db = (ev.target as CustomTarget).result;
+
+        db.onsuccess = (ev) =>
+          this.onSuccess({
+            ev: ev as CustomEvent,
+            resolve,
+            loggerText: `SUCCESSFULLY UPGRADED ${dbName.blue} DATABASE`.green,
+          });
+      };
+      this._CLIENT_DB_REQUEST.onsuccess = (ev) =>
+        this.onSuccess({
+          ev: ev as CustomEvent,
+          resolve,
+          loggerText: `SUCCESSFULLY OPENED ${dbName.blue} DATABASE`.green,
+        });
+      this._CLIENT_DB_REQUEST.onerror = (ev) =>
+        this.onError({ ev: ev as CustomEvent, reject, loggerText: `FAILED TO OPEN ${dbName.white} DATABASE`.red });
     });
   }
 
-  /**
-   * @create
-   *
-   */
   public create<Response = any>(): Promise<Error | Response> {
     this.constraint(this.create);
 
@@ -95,12 +113,6 @@ export class ClientDb {
     });
   }
 
-  /**
-   * @read
-   *
-   * @queries
-   *
-   */
   public read<Response = any>(): Promise<Error | Response> {
     this.constraint(this.read);
 
@@ -109,10 +121,6 @@ export class ClientDb {
     });
   }
 
-  /**
-   * @update
-   *
-   */
   public update<Response = any>(): Promise<Error | Response> {
     this.constraint(this.update);
 
@@ -121,10 +129,6 @@ export class ClientDb {
     });
   }
 
-  /**
-   * @delete
-   *
-   */
   public delete<Response = any>(): Promise<Error | Response> {
     this.constraint(this.delete);
 
@@ -133,21 +137,7 @@ export class ClientDb {
     });
   }
 
-  /**
-   * @count
-   *
-   * @queries - for different database queries or columns queries
-   *
-   */
-  public count<Response = any>(): Promise<Error | Response> {
-    this.constraint(this.count);
-
-    return new Promise((resolve, reject) => {
-      console.log(resolve, reject);
-    });
-  }
-
   public get dbInfo() {
-    return this.CLIENT_DB.result;
+    return this._CLIENT_DB_REQUEST.result;
   }
 }

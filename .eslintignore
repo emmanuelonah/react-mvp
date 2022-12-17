@@ -10,3 +10,5 @@ prod-storybook/**
 *.stories.@(ts|tsx)
 *.test.@(ts|tsx|js|jsx)
 *.spec.@(ts|tsx|js|jsx)
+
+**/json-prune/*
