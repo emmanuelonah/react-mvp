@@ -99,10 +99,10 @@ export class ClientDb {
           this.onError({
             ev: ev as CustomEvent,
             reject,
-            loggerText: `FAILED TO UPGRADED ${dbName.white} DATABASE`.red,
+            loggerText: `FAILED TO UPGRADE ${dbName.white} DATABASE`.red,
             error: new ClientDbError(
               DEFAULT_ERROR_MESSAGES.DATABASE_UPGRADE_ERROR,
-              503,
+              404,
               ERROR_CODES.DATABASE_UPGRADE_ERROR
             ),
           });
@@ -118,7 +118,6 @@ export class ClientDb {
           ev: ev as CustomEvent,
           reject,
           loggerText: `FAILED TO OPEN ${dbName.white} DATABASE`.red,
-
           error: new ClientDbError(
             DEFAULT_ERROR_MESSAGES.DATABASE_CONNECTION_ERROR,
             503,
