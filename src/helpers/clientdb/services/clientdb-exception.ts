@@ -20,7 +20,7 @@ const ERROR_CODES = Object.freeze({
 const DEFAULT_ERROR_MESSAGES = Object.freeze({
   DATABASE_INITIALIZATION_ERROR: 'You must initialize the database to proceed with other operations.',
   DATABASE_CONNECTION_ERROR:
-    'There was an error connecting to the Database kindly terminate your program and rerun, Also remember to read the "error stack trace".',
+    'There was an error connecting to the Database kindly terminate your program and rerun. Also remember to read the "error stack trace".',
   DATABASE_UPGRADE_ERROR:
     'There was an error upgrading the Database kindly terminate your program and rerun. Also remember to read the "error stack trace".',
   RESOURCE_CREATION_ERROR:
@@ -31,8 +31,10 @@ const DEFAULT_ERROR_MESSAGES = Object.freeze({
     'There was an error updating a resource in the Database kindly terminate your program and rerun. Also remember to read the "error stack trace".',
   RESOURCE_DELETE_ERROR:
     'There was an error deleting a resource in the Database kindly terminate your program and rerun. Also remember to read the "error stack trace".',
-  TIMEOUT_ERROR: 'There was a timeout error in other words, the time for this operation is exceeded.',
-  RANGE_ERROR: 'There was a range error in other words, the memory availability for this expression is exceeded.',
+  TIMEOUT_ERROR:
+    'There was a timeout error in other words, the time for this operation is exceeded. Also remember to read the "error stack trace".',
+  RANGE_ERROR:
+    'There was a range error in other words, the memory availability for this expression is exceeded. Also remember to read the "error stack trace".',
 });
 
 class ClientDbException extends Error {
