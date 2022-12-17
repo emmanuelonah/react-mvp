@@ -37,7 +37,7 @@ const DEFAULT_ERROR_MESSAGES = Object.freeze({
     'There was a range error in other words, the memory availability for this expression is exceeded. Also remember to read the "error stack trace".',
 });
 
-class ClientDbException extends Error {
+class ClientDbError extends Error {
   code: ValueOf<typeof ERROR_CODES>;
 
   statusCode: number;
@@ -51,4 +51,4 @@ class ClientDbException extends Error {
   }
 }
 
-export { ClientDbException, ERROR_CODES, DEFAULT_ERROR_MESSAGES };
+export { ClientDbError, ERROR_CODES, DEFAULT_ERROR_MESSAGES };

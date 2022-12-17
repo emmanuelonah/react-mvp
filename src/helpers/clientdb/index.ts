@@ -36,6 +36,7 @@
 import 'colors';
 
 import { __DEV__, throwError } from 'utils';
+import { ClientDbError, ERROR_CODES, DEFAULT_ERROR_MESSAGES } from './services/clientdb-error';
 
 interface CustomTarget extends EventTarget {
   result: IDBRequest;
@@ -71,13 +72,13 @@ export class ClientDb {
     arg.resolve(this._CLIENT_DB_REQUEST.result);
   }
 
-  private onError(arg: { ev: CustomEvent; loggerText: string; reject: (reason?: any) => void }) {
+  private onError(arg: { ev: CustomEvent; loggerText: string; reject: (reason?: any) => void; error: ClientDbError }) {
     if (__DEV__) {
       console.log(arg.loggerText);
       console.log(JSON.stringify(arg.ev));
     }
 
-    arg.reject(this._CLIENT_DB_REQUEST.result);
+    arg.reject(arg.error);
   }
 
   public initialize(dbName: string): Promise<IDBDatabase> {
@@ -93,6 +94,18 @@ export class ClientDb {
             resolve,
             loggerText: `SUCCESSFULLY UPGRADED ${dbName.blue} DATABASE`.green,
           });
+
+        db.onerror = (ev) =>
+          this.onError({
+            ev: ev as CustomEvent,
+            reject,
+            loggerText: `FAILED TO UPGRADED ${dbName.white} DATABASE`.red,
+            error: new ClientDbError(
+              DEFAULT_ERROR_MESSAGES.DATABASE_UPGRADE_ERROR,
+              503,
+              ERROR_CODES.DATABASE_UPGRADE_ERROR
+            ),
+          });
       };
       this._CLIENT_DB_REQUEST.onsuccess = (ev) =>
         this.onSuccess({
@@ -101,11 +114,21 @@ export class ClientDb {
           loggerText: `SUCCESSFULLY OPENED ${dbName.blue} DATABASE`.green,
         });
       this._CLIENT_DB_REQUEST.onerror = (ev) =>
-        this.onError({ ev: ev as CustomEvent, reject, loggerText: `FAILED TO OPEN ${dbName.white} DATABASE`.red });
+        this.onError({
+          ev: ev as CustomEvent,
+          reject,
+          loggerText: `FAILED TO OPEN ${dbName.white} DATABASE`.red,
+
+          error: new ClientDbError(
+            DEFAULT_ERROR_MESSAGES.DATABASE_CONNECTION_ERROR,
+            503,
+            ERROR_CODES.DATABASE_CONNECTION_ERROR
+          ),
+        });
     });
   }
 
-  public create<Response = any>(): Promise<Error | Response> {
+  public create<Response = any>(): Promise<ClientDbError | Response> {
     this.constraint(this.create);
 
     return new Promise((resolve, reject) => {
@@ -113,7 +136,7 @@ export class ClientDb {
     });
   }
 
-  public read<Response = any>(): Promise<Error | Response> {
+  public read<Response = any>(): Promise<ClientDbError | Response> {
     this.constraint(this.read);
 
     return new Promise((resolve, reject) => {
@@ -121,7 +144,7 @@ export class ClientDb {
     });
   }
 
-  public update<Response = any>(): Promise<Error | Response> {
+  public update<Response = any>(): Promise<ClientDbError | Response> {
     this.constraint(this.update);
 
     return new Promise((resolve, reject) => {
@@ -129,7 +152,7 @@ export class ClientDb {
     });
   }
 
-  public delete<Response = any>(): Promise<Error | Response> {
+  public delete<Response = any>(): Promise<ClientDbError | Response> {
     this.constraint(this.delete);
 
     return new Promise((resolve, reject) => {

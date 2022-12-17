@@ -44,6 +44,7 @@
     "no-nested-ternary": "off",
     "no-confusing-arrow": "off",
     "operator-linebreak": "off",
+    "class-methods-use-this": "off",
     "react/jsx-fragments": "off",
     "no-underscore-dangle": "off",
     "prefer-destructuring": "off",
