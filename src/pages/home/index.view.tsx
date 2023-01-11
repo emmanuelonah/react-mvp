@@ -22,7 +22,6 @@
 import styled from 'styled-components';
 
 import { ValueOf } from 'GlobalTypes';
-import { Main, Header } from 'layouts';
 import { UsersResolvedResponse } from 'UsersTypes';
 import { TodosResolvedResponse } from 'TodosTypes';
 import { AsyncRenderer, Card } from 'components';
@@ -80,69 +79,65 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <AsyncRenderer<UsersResolvedResponse>
+        endpoint="get/users"
+        isLoading={isLoadingUsers}
+        error={usersError}
+        data={usersData}
+        hasData={!!usersData?.length}
+      >
+        {(users) => (
+          <section>
+            <Title>Users 👨‍🏫</Title>
+            <WrapperParent>
+              {users?.slice(0, 6).map(({ id, name, email, address }) => (
+                <Wrapper key={id}>
+                  <List>
+                    <li>{name}</li>
+                    <li>
+                      <a href={`mailto:${email}`}>{email}</a>
+                    </li>
+                    <li>
+                      <address>{`${address.street} ${address.city}`}</address>
+                    </li>
+                  </List>
+                </Wrapper>
+              ))}
+            </WrapperParent>
+          </section>
+        )}
+      </AsyncRenderer>
 
-      <Main>
-        <AsyncRenderer<UsersResolvedResponse>
-          endpoint="get/users"
-          isLoading={isLoadingUsers}
-          error={usersError}
-          data={usersData}
-          hasData={!!usersData?.length}
-        >
-          {(users) => (
-            <section>
-              <Title>Users 👨‍🏫</Title>
-              <WrapperParent>
-                {users?.slice(0, 6).map(({ id, name, email, address }) => (
+      <AsyncRenderer<TodosResolvedResponse>
+        endpoint="get/todos"
+        isLoading={isLoadingTodos}
+        error={todosError}
+        data={todosData!}
+        hasData={!!todosData?.length}
+      >
+        {(todos) => (
+          <section>
+            <Title>TODOS 📝</Title>
+            <WrapperParent>
+              {todos?.slice(0, 6).map(({ id, userId, title, completed }) => {
+                const status = completed ? STATUS_TYPES.COMPLETED : STATUS_TYPES.NOT_COMPLETED;
+
+                return (
                   <Wrapper key={id}>
                     <List>
-                      <li>{name}</li>
                       <li>
-                        <a href={`mailto:${email}`}>{email}</a>
+                        <StatusTag status={status}>{status}</StatusTag>
                       </li>
-                      <li>
-                        <address>{`${address.street} ${address.city}`}</address>
-                      </li>
+                      <li>{title}</li>
+                      <li>{userId}</li>
                     </List>
                   </Wrapper>
-                ))}
-              </WrapperParent>
-            </section>
-          )}
-        </AsyncRenderer>
-
-        <AsyncRenderer<TodosResolvedResponse>
-          endpoint="get/todos"
-          isLoading={isLoadingTodos}
-          error={todosError}
-          data={todosData!}
-          hasData={!!todosData?.length}
-        >
-          {(todos) => (
-            <section>
-              <Title>TODOS 📝</Title>
-              <WrapperParent>
-                {todos?.slice(0, 6).map(({ id, userId, title, completed }) => {
-                  const status = completed ? STATUS_TYPES.COMPLETED : STATUS_TYPES.NOT_COMPLETED;
-
-                  return (
-                    <Wrapper key={id}>
-                      <List>
-                        <li>
-                          <StatusTag status={status}>{status}</StatusTag>
-                        </li>
-                        <li>{title}</li>
-                        <li>{userId}</li>
-                      </List>
-                    </Wrapper>
-                  );
-                })}
-              </WrapperParent>
-            </section>
-          )}
-        </AsyncRenderer>
-      </Main>
+                );
+              })}
+            </WrapperParent>
+          </section>
+        )}
+      </AsyncRenderer>
     </>
   );
 }

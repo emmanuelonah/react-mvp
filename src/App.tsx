@@ -1,6 +1,7 @@
 import { ThemeProvider } from 'styled-components';
 
 import { theme, GlobalStyle } from 'styles';
+import { Layout } from 'layouts';
 import { Routes } from 'routes';
 
 export default function App() {
@@ -12,7 +13,9 @@ export default function App() {
         Skip to main content
       </a>
 
-      <Routes />
+      <Layout>
+        <Routes />
+      </Layout>
     </ThemeProvider>
   );
 }

@@ -92,14 +92,14 @@ export class ClientDb {
           this.onSuccess({
             ev: ev as CustomEvent,
             resolve,
-            loggerText: `SUCCESSFULLY UPGRADED ${dbName.blue} DATABASE`.green,
+            loggerText: `SUCCESSFULLY UPGRADED ${dbName} DATABASE`,
           });
 
         db.onerror = (ev) =>
           this.onError({
             ev: ev as CustomEvent,
             reject,
-            loggerText: `FAILED TO UPGRADE ${dbName.white} DATABASE`.red,
+            loggerText: `FAILED TO UPGRADE ${dbName} DATABASE`,
             error: new ClientDbError(
               DEFAULT_ERROR_MESSAGES.DATABASE_UPGRADE_ERROR,
               404,
@@ -111,13 +111,13 @@ export class ClientDb {
         this.onSuccess({
           ev: ev as CustomEvent,
           resolve,
-          loggerText: `SUCCESSFULLY OPENED ${dbName.blue} DATABASE`.green,
+          loggerText: `SUCCESSFULLY OPENED ${dbName} DATABASE`,
         });
       this._CLIENT_DB_REQUEST.onerror = (ev) =>
         this.onError({
           ev: ev as CustomEvent,
           reject,
-          loggerText: `FAILED TO OPEN ${dbName.white} DATABASE`.red,
+          loggerText: `FAILED TO OPEN ${dbName} DATABASE`,
           error: new ClientDbError(
             DEFAULT_ERROR_MESSAGES.DATABASE_CONNECTION_ERROR,
             503,
