@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const Container = styled.main`
   padding: 1rem;
   margin: 0 auto;
+  margin-bottom: 4rem;
   max-width: ${({ theme }) => theme.pageWidth.maxWidth};
 `;
 

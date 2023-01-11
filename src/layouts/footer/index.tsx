@@ -7,6 +7,7 @@ import { AccessibleIcon } from 'components/accessible-icon';
 import { IconGithub } from './assets/icn-github.svg';
 
 const Container = styled.footer`
+  background-color: #fff;
   border-top: solid 1px #eee;
   display: flex;
   justify-content: center;
