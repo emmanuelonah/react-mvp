@@ -2,7 +2,7 @@
 
 This is a practical experiment for a book i am writing title the ***Modernized FE architecture***
 
-**Note:** this codebase covers the 4 pillars of Frontend architecture(which will be discovered deeper in the book)
+**Note:** this codebase covers the 4 pillars of Frontend architecture(which will be discussed deeper in the book)
 
 1. Code
 2. processes
