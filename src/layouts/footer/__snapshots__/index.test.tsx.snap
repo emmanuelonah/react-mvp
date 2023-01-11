@@ -2,7 +2,7 @@
 
 exports[`<Footer/> should render Component 1`] = `
 <footer
-  class="sc-ftTHYK Qyygo"
+  class="sc-ftTHYK hAhBdQ"
   data-testid="footer"
 >
   <p>
