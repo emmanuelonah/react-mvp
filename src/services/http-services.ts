@@ -1,3 +1,7 @@
+/**
+ * Function http service facade
+ */
+
 import axios, { AxiosResponse, AxiosRequestHeaders, AxiosRequestConfig } from 'axios';
 
 import { getCookie } from 'hooks';
