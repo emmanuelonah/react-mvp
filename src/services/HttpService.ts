@@ -25,10 +25,10 @@ export class HttpService {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    if (authRequest) {
-      HttpService.validateToken(getToken?.()!);
+    if (authRequest && getToken!=undefined) {
+      HttpService.validateToken(getToken());
 
-      HttpService.requestMiddleware(getToken!);
+      HttpService.requestMiddleware(getToken);
     }
   }
 
