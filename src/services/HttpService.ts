@@ -1,17 +1,9 @@
-/**
- * class http service facade
- */
-
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { throwError } from 'utils';
 
 type HttpServiceArg = {
   baseURL: string;
-  /**
-   * @getToken
-   * Lets use a function here to avoid staled token
-   */
   getToken?(): string;
   authRequest?: boolean;
 };
@@ -20,34 +12,31 @@ export class HttpService {
   __httpService__: AxiosInstance;
 
   constructor({ baseURL, getToken, authRequest = true }: HttpServiceArg) {
-    this.__httpService__ = axios.create({
-      baseURL,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    this.__httpService__ = axios.create({ baseURL, headers: { 'Content-Type': 'application/json' } });
 
-    if (authRequest && getToken!=undefined) {
-      HttpService.validateToken(getToken());
-
-      HttpService.requestMiddleware(getToken);
-    }
+    if (authRequest && getToken != undefined) this.requestMiddleware(getToken);
   }
 
   private static validateToken(token: string) {
-    /**
-     * Lets cover the situation of falsy string
-     */
     if (!token) throwError('MissingTokenError', 'Invalid token.', HttpService.validateToken);
   }
 
-  private static requestMiddleware(getToken: () => string) {
-    axios.interceptors.request.use(async function appendAuthorizationToEveryRequest(config) {
-      config.headers!.Authorization = `Bearer ${getToken()}`;
+  private requestMiddleware(getToken: () => string) {
+    this.__httpService__.interceptors.request.use(
+      async function appendAuthorizationToEveryRequest(config) {
+        HttpService.validateToken(getToken());
 
-      return config;
-    });
+        config.headers!.Authorization = `Bearer ${getToken()}`;
+
+        return config;
+      },
+      function (error) {
+        return Promise.reject(error);
+      }
+    );
   }
 
-  public async httpGetRequest<C = any, ResponseType = Record<string, any>>(
+  public async httpGetRequest<ResponseType = Record<string, any>, C = any>(
     url: string,
     config?: AxiosRequestConfig<C>
   ) {
@@ -56,7 +45,7 @@ export class HttpService {
     return response;
   }
 
-  public async httpPostRequest<C = any, D = Record<string, string>, ResponseType = any>(
+  public async httpPostRequest<D = Record<string, string>, ResponseType = any, C = any>(
     url: string,
     data: D,
     config?: AxiosRequestConfig<C extends D ? any : any>
@@ -66,7 +55,7 @@ export class HttpService {
     return response;
   }
 
-  public async httpPutRequest<C = any, D = Record<string, string>, ResponseType = any>(
+  public async httpPutRequest<D = Record<string, string>, ResponseType = any, C = any>(
     url: string,
     data: D,
     config?: AxiosRequestConfig<C extends D ? any : any>
@@ -76,7 +65,7 @@ export class HttpService {
     return response;
   }
 
-  public async httpPatchRequest<C = any, D = Record<string, string>, ResponseType = any>(
+  public async httpPatchRequest<D = Record<string, string>, ResponseType = any, C = any>(
     url: string,
     data: D,
     config?: AxiosRequestConfig<C extends D ? any : any>
@@ -86,7 +75,7 @@ export class HttpService {
     return response;
   }
 
-  public async httpDeleteRequest<C = any, ResponseType = any>(url: string, config?: AxiosRequestConfig<C>) {
+  public async httpDeleteRequest<ResponseType = any, C = any>(url: string, config?: AxiosRequestConfig<C>) {
     const response = await this.__httpService__.delete<ResponseType>(url, config);
 
     return response;
