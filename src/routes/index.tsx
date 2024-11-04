@@ -1,20 +1,25 @@
-import { BrowserRouter, Routes as Switch, Route } from 'react-router-dom';
+import { Routes as Switch, Route } from 'react-router-dom';
 
-import * as Screens from 'pages';
-import { ErrorBoundary } from './components/error-boundary';
+import * as Screens from 'views';
 
-const SCREENS_COLLECTIONS = [{ path: '/', element: <Screens.Home /> }];
+const ROUTES = {
+  HOME: '/',
+  JOKES: '/jokes',
+};
 
-export function Routes() {
+const SCREENS_COLLECTIONS = [
+  { path: ROUTES.HOME, element: <Screens.Home /> },
+  { path: ROUTES.JOKES, element: <Screens.ChuckNorris /> },
+];
+
+function Routes() {
   return (
-    <ErrorBoundary>
-      <BrowserRouter>
-        <Switch>
-          {SCREENS_COLLECTIONS.map((props, index) => (
-            <Route key={index.toString()} {...props} />
-          ))}
-        </Switch>
-      </BrowserRouter>
-    </ErrorBoundary>
+    <Switch>
+      {SCREENS_COLLECTIONS.map((props, index) => (
+        <Route key={index.toString()} {...props} />
+      ))}
+    </Switch>
   );
 }
+
+export { Routes, ROUTES };

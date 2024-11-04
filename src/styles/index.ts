@@ -1,2 +1,2 @@
 export { theme } from './theme';
-export { GlobalStyle } from './global-style.css';
+export { GlobalStyle, SkipToMainContent } from './global-style.css';

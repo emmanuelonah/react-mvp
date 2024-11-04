@@ -5,79 +5,58 @@ import { throwError } from 'utils';
 type HttpServiceArg = {
   baseURL: string;
   getToken?(): string;
-  authRequest?: boolean;
 };
 
 export class HttpService {
-  __httpService__: AxiosInstance;
+  private __httpService__: AxiosInstance;
 
-  constructor({ baseURL, getToken, authRequest = true }: HttpServiceArg) {
+  constructor({ baseURL, getToken }: HttpServiceArg) {
     this.__httpService__ = axios.create({ baseURL, headers: { 'Content-Type': 'application/json' } });
-
-    if (authRequest && getToken != undefined) this.requestMiddleware(getToken);
+    if (getToken) this.requestMiddleware(getToken);
   }
 
   private static validateToken(token: string) {
     if (!token) throwError('MissingTokenError', 'Invalid token.', HttpService.validateToken);
   }
 
-  private requestMiddleware(getToken: () => string) {
+  private requestMiddleware = (getToken: () => string) => {
     this.__httpService__.interceptors.request.use(
-      async function appendAuthorizationToEveryRequest(config) {
+      async (config) => {
         HttpService.validateToken(getToken());
-
         config.headers!.Authorization = `Bearer ${getToken()}`;
-
         return config;
       },
-      function (error) {
-        return Promise.reject(error);
-      }
+      (error) => Promise.reject(error)
     );
-  }
+  };
 
-  public async httpGetRequest<ResponseType = Record<string, any>, C = any>(
+  private async request<ResponseType = any, D = any, C = any>(
+    method: 'get' | 'post' | 'put' | 'patch' | 'delete',
     url: string,
+    data?: D,
     config?: AxiosRequestConfig<C>
   ) {
-    const response = await this.__httpService__.get<ResponseType>(url, config);
-
+    const response = await this.__httpService__[method]<ResponseType>(url, data, config);
     return response;
   }
 
-  public async httpPostRequest<D = Record<string, string>, ResponseType = any, C = any>(
-    url: string,
-    data: D,
-    config?: AxiosRequestConfig<C extends D ? any : any>
-  ) {
-    const response = await this.__httpService__.post<ResponseType>(url, data, config);
-
-    return response;
+  public httpGetRequest<ResponseType = any, C = any>(url: string, config?: AxiosRequestConfig<C>) {
+    return this.request<ResponseType, undefined, C>('get', url, undefined, config);
   }
 
-  public async httpPutRequest<D = Record<string, string>, ResponseType = any, C = any>(
-    url: string,
-    data: D,
-    config?: AxiosRequestConfig<C extends D ? any : any>
-  ) {
-    const response = await this.__httpService__.put<ResponseType>(url, data, config);
-
-    return response;
+  public httpPostRequest<D = any, ResponseType = any, C = any>(url: string, data: D, config?: AxiosRequestConfig<C>) {
+    return this.request<ResponseType, D, C>('post', url, data, config);
   }
 
-  public async httpPatchRequest<D = Record<string, string>, ResponseType = any, C = any>(
-    url: string,
-    data: D,
-    config?: AxiosRequestConfig<C extends D ? any : any>
-  ) {
-    const response = await this.__httpService__.patch<ResponseType>(url, data, config);
-
-    return response;
+  public httpPutRequest<D = any, ResponseType = any, C = any>(url: string, data: D, config?: AxiosRequestConfig<C>) {
+    return this.request<ResponseType, D, C>('put', url, data, config);
   }
 
-  public async httpDeleteRequest<ResponseType = any, C = any>(url: string, config?: AxiosRequestConfig<C>) {
-    const response = await this.__httpService__.delete<ResponseType>(url, config);
+  public httpPatchRequest<D = any, ResponseType = any, C = any>(url: string, data: D, config?: AxiosRequestConfig<C>) {
+    return this.request<ResponseType, D, C>('patch', url, data, config);
+  }
 
-    return response;
+  public httpDeleteRequest<ResponseType = any, C = any>(url: string, config?: AxiosRequestConfig<C>) {
+    return this.request<ResponseType, undefined, C>('delete', url, undefined, config);
   }
 }

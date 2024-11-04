@@ -12,5 +12,6 @@ export {
   type VisuallyHiddenElement,
   type VisuallyHiddenPropTypes,
 } from './visuallyhidden';
+export { ErrorBoundary } from './error-boundary';
 export { AsyncRenderer } from './async-renderer';
 export { Store, Notification, Csp } from './__example__';

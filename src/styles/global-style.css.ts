@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import { theme } from './theme';
 
@@ -50,31 +50,32 @@ export const GlobalStyle = createGlobalStyle<{ theme: typeof theme }>`
     [type="reset"],
     [type="button"]{
         cursor: pointer;
+
         &:disabled{
             opacity: 0.5;
             cursor: not-allowed;
         }
     }
+`;
 
-    .skip-content {
-        background-color: #eee;
-        border: solid 1px #333;
-        border-radius: 5px;
-        color: #333;
-        font-size: 0.9rem;
-        padding: 8px;
-        position: absolute;
-        left: 0;
-        top: -45px;
-        z-index: 100;
-        transition: top 0.5s ease-out;
-        outline: none;
-        
-        &:focus {
-        position: absolute;
-        left: 0;
-        top:0;
-        transition: top 0.5s ease-in;
-        };
-    };
+export const SkipToMainContent = styled.a`
+  background-color: #eee;
+  border: solid 1px #333;
+  border-radius: 5px;
+  color: #333;
+  font-size: 0.9rem;
+  padding: 8px;
+  position: absolute;
+  left: 0;
+  top: -45px;
+  z-index: 100;
+  transition: top 0.5s ease-out;
+  outline: none;
+
+  &:focus {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: top 0.5s ease-in;
+  }
 `;
