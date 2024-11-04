@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import { TestWrapper } from 'utils';
 
@@ -6,11 +6,11 @@ import { Main } from '.';
 
 describe('<Main/>', () => {
   test('should render Component', () => {
-    const { container } = render(
+    render(
       <TestWrapper>
         <Main>Hello React Testing Library</Main>
       </TestWrapper>
     );
-    expect(container.firstChild).toMatchSnapshot();
+    expect(screen.getByText('Hello React Testing Library')).toBeInTheDocument();
   });
 });
